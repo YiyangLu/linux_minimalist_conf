@@ -1,3 +1,4 @@
+# install fzf using init_fzf.sh script first
 git clone https://github.com/lincheney/fzf-tab-completion.git ~/Software/fzf_tab_completion
 # Add to ~/.bashrc
 echo 'source ~/Software/fzf_tab_completion/bash/fzf-bash-completion.sh' >> ~/.bashrc

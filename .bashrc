@@ -4,7 +4,12 @@ case $- in
       *) return;;
 esac
 
-# Source custom bashrc file
+# .bashrc_conf: complete setup
 if [ -f ~/.bashrc_conf ]; then
     . ~/.bashrc_conf
 fi
+
+# .bashrc_conf: minimal setup without color/alias setup
+# if [ -f ~/.bashrc_conf ]; then
+#     . ~/.bashrc_conf
+# fi

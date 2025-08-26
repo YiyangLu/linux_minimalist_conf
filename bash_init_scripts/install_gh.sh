@@ -102,19 +102,24 @@ if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
     
     # Check if the PATH export already exists in the file
     if ! grep -q 'export PATH="$HOME/.local/bin:$PATH"' "$SHELL_CONFIG"; then
+        # Ensure there's a newline before adding our line
+        if [ -s "$SHELL_CONFIG" ] && [ "$(tail -c 1 "$SHELL_CONFIG" | wc -l)" -eq 0 ]; then
+            echo "" >> "$SHELL_CONFIG"
+        fi
         echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$SHELL_CONFIG"
         echo -e "${GREEN}PATH updated in $SHELL_CONFIG${NC}"
         echo -e "${YELLOW}Please run: source $SHELL_CONFIG${NC}"
     fi
     
-    # Export for current session
+    # Export for current session and source to test like user would
     export PATH="$HOME/.local/bin:$PATH"
+    source "$SHELL_CONFIG" 2>/dev/null || true
 else
     echo -e "${GREEN}~/.local/bin is already in PATH${NC}"
 fi
 
-# Verify installation
-if ~/.local/bin/gh --version &> /dev/null; then
+# Verify installation using source-updated PATH
+if command -v gh &> /dev/null && gh --version &> /dev/null; then
     INSTALLED_VERSION=$(~/.local/bin/gh --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
     echo -e "${GREEN}✓ GitHub CLI v$INSTALLED_VERSION installed successfully!${NC}"
     echo -e "${YELLOW}You can now use 'gh' command${NC}"
